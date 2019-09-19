@@ -352,7 +352,7 @@ var CG = (function(CG) {
 	* @return {Matrix4}
 	*/
 	static lookAt(eye, center, up){
-		let w = CG.Vector3.resta(center,eye).normalize();
+		let w = CG.Vector3.resta(eye,center).normalize();
 		let u = CG.Vector3.cruz(w,up).normalize();
 		let v = CG.Vector3.cruz(u,w);
 		let matrixL= new Matrix4(u.x,u.y,u.z,0,
