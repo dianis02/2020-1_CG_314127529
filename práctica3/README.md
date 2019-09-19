@@ -12,4 +12,4 @@ Ramírez García Diana Isabel
 # E-mail #
 dianis@ciencias.unam.mx
 ## Descripción ##
-Práctica 1 de la clase de Garficación por computadora 2020-1
+Práctica 3 de la clase de Garficación por computadora 2020-1

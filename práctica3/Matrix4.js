@@ -352,6 +352,14 @@ var CG = (function(CG) {
 	* @return {Matrix4}
 	*/
 	static lookAt(eye, center, up){
+		let w = CG.Vector3.resta(center,eye).normalize();
+		let u = CG.Vector3.cruz(w,up).normalize();
+		let v = CG.Vector3.cruz(u,w);
+		let matrixL= new Matrix4(u.x,u.y,u.z,0,
+								 v.x,v.y,v.z,0,
+								 w.x,w.y,w.z,0,
+								 eye.x,eye.y,eye.z,1);
+		return matrixL;
 	}
 	
 	
@@ -360,7 +368,7 @@ var CG = (function(CG) {
 	* @return {Vector4}
 	*/
 	multiplyVector(v){
-			let vector= new CG.Vector3(this.a00*v.x+this.a10*v.y+this.a20*v.z+this.a30*v.w,
+			let vector= new CG.Vector4(this.a00*v.x+this.a10*v.y+this.a20*v.z+this.a30*v.w,
 								this.a01*v.x+this.a11*v.y+this.a21*v.z+this.a31*v.w,
 								this.a02*v.x+this.a12*v.y+this.a22*v.z+this.a32*v.w,
 								this.a03*v.x+this.a13*v.y+this.a23*v.z+this.a33*v.w);
@@ -395,10 +403,12 @@ var CG = (function(CG) {
 	* @return {Matrix4}
 	*/
 	static perspective(fovy, aspect, near, far){
-		let matrixR= new Matrix4(,0,0,0,
-								 0,,0,0,
-								 0,0,((far+near)/(far-near)),-1,
-								 0,0,((2*far*near)/(far-near)),0)
+		let matrixP= new Matrix4((1/Math.tan(fovy/2))/aspect,0,0,0,
+								 0,(1/Math.tan(fovy/2)),0,0,
+								 0,0,((far+near)/(near-far)),-1,
+								 0,0,((2*far*near)/(near-far)),0);
+		
+		return matrixP;
 	}
 	
 	/**
