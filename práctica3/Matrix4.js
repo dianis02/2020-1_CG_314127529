@@ -339,7 +339,7 @@ var CG = (function(CG) {
 	*/
 	static frustum(left, right, bottom, top, near, far){
 		let matrixO= new Matrix4((2/(right-left)),0,0,0,
-								 0,(2n/(top-bottom)),0,0,
+								 0,(2*near/(top-bottom)),0,0,
 								 ((right+left)/(right-left)),((top+bottom)/(top-bottom)),((-far+near)/(far-near)),-1,
 								 0,0,(-2*near*far/(far-near)),0);
 		return matrixO;
