@@ -339,7 +339,7 @@ var CG = (function(CG) {
 	*/
 	static frustum(left, right, bottom, top, near, far){
 		let matrixO= new Matrix4((2/(right-left)),0,0,0,
-								 0,(2n/(top-bottom)),0,0,
+								 0,(2*near/(top-bottom)),0,0,
 								 ((right+left)/(right-left)),((top+bottom)/(top-bottom)),((-far+near)/(far-near)),-1,
 								 0,0,(-2*near*far/(far-near)),0);
 		return matrixO;
@@ -352,7 +352,7 @@ var CG = (function(CG) {
 	* @return {Matrix4}
 	*/
 	static lookAt(eye, center, up){
-		let w = CG.Vector3.resta(center,eye).normalize();
+		let w = CG.Vector3.resta(eye,center).normalize();
 		let u = CG.Vector3.cruz(w,up).normalize();
 		let v = CG.Vector3.cruz(u,w);
 		let matrixL= new Matrix4(u.x,u.y,u.z,0,
