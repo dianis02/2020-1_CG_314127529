@@ -226,6 +226,61 @@ var CG = (function(CG) {
 	
 	
 	
+	/**
+	* @param {Vector3} v
+	* @return {Vector3}
+	*/
+	multiplyVector(v){
+		let vector= new CG.Vector3(this.a00*v.x+this.a10*v.y+this.a20*v.z,
+								this.a01*v.x+this.a11*v.y+this.a21*v.z,
+								this.a02*v.x+this.a12*v.y+this.a22*v.z);
+		return vector;
+		
+		
+	}
+	
+	/**
+	* @param {Number} rad
+	* @return {Matrix3}
+	* rotacion en contra de las manecillas
+	*/
+	static rotate(rad){
+		let matrixR= new Matrix3(Math.cos(rad), Math.sin(rad),0,
+								 - Math.sin(rad),Math.cos(rad),0,
+								 0,0,1);
+		return matrixR;
+		
+	
+		
+	}
+	
+	
+	/**
+	* @param {Number} sx
+	* @param {Number} sy
+	* @return {Matrix3}
+	*/
+	static scale(sx, sy){
+		let matrixS= new Matrix3(sx,0,0,
+								 0,sy,0,
+								 0,0,1);
+		return matrixS;
+	}
+	
+	
+	/**
+	* @param {Number} tx
+	* @param {Number} ty
+	* @return {Matrix3}
+	*/
+	static translate(tx, ty){
+		let matrixT= new Matrix3(1,0,0,
+								 0,1,0,
+								 tx,ty,1);
+		return matrixT;
+	}
+	
+	
     
 }
 

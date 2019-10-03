@@ -328,7 +328,153 @@ var CG = (function(CG) {
 	
 	
 	
+	/**
+	* @param {Number} left
+	* @param {Number} right
+	* @param {Number} bottom
+	* @param {Number} top
+	* @param {Number} near
+	* @param {Number} far
+	* @return {Matrix4}
+	*/
+	static frustum(left, right, bottom, top, near, far){
+		let matrixO= new Matrix4((2/(right-left)),0,0,0,
+								 0,(2*near/(top-bottom)),0,0,
+								 ((right+left)/(right-left)),((top+bottom)/(top-bottom)),((-far+near)/(far-near)),-1,
+								 0,0,(-2*near*far/(far-near)),0);
+		return matrixO;
+	}
+	
+	/**
+	* @param {Vector3} eye
+	* @param {Vector3} center
+	* @param {Vector3} up
+	* @return {Matrix4}
+	*/
+	static lookAt(eye, center, up){
+		let w = CG.Vector3.resta(eye,center).normalize();
+		let u = CG.Vector3.cruz(w,up).normalize();
+		let v = CG.Vector3.cruz(u,w);
+		let matrixL= new Matrix4(u.x,u.y,u.z,0,
+								 v.x,v.y,v.z,0,
+								 w.x,w.y,w.z,0,
+								 eye.x,eye.y,eye.z,1);
+		return matrixL;
+	}
+	
+	
+	/**
+	* @param {Vector4} v
+	* @return {Vector4}
+	*/
+	multiplyVector(v){
+			let vector= new CG.Vector4(this.a00*v.x+this.a10*v.y+this.a20*v.z+this.a30*v.w,
+								this.a01*v.x+this.a11*v.y+this.a21*v.z+this.a31*v.w,
+								this.a02*v.x+this.a12*v.y+this.a22*v.z+this.a32*v.w,
+								this.a03*v.x+this.a13*v.y+this.a23*v.z+this.a33*v.w);
+		return vector;
+	}
     
+    
+    /**
+	* @param {Number} left
+	* @param {Number} right
+	* @param {Number} bottom
+	* @param {Number} top
+	* @param {Number} near
+	* @param {Number} far
+	* @return {Matrix4}
+	*/
+	static ortho(left, right, bottom, top, near, far){	
+		let matrixO= new Matrix4((2/(right-left)),0,0,0,
+								 0,(2/(top-bottom)),0,0,
+								 0,0,(1/(far-near)),-1,
+								 ((-right+left)/(right-left)),((-top+bottom)/(top-bottom)),(-near/(far-near)),1);
+		return matrixO;
+								 
+		
+	}
+	
+	/**
+	* @param {Number} fovy
+	* @param {Number} aspect
+	* @param {Number} near
+	* @param {Number} far
+	* @return {Matrix4}
+	*/
+	static perspective(fovy, aspect, near, far){
+		let matrixP= new Matrix4((1/Math.tan(fovy/2))/aspect,0,0,0,
+								 0,(1/Math.tan(fovy/2)),0,0,
+								 0,0,((far+near)/(near-far)),-1,
+								 0,0,((2*far*near)/(near-far)),0);
+		
+		return matrixP;
+	}
+	
+	/**
+	* @param {Number} rad
+	* @return {Matrix4}
+	*/
+	static rotateX(rad){
+		let matrixR= new Matrix4(1,0,0,0,	
+								 0,Math.cos(rad), Math.sin(rad),0,
+								 0,- Math.sin(rad),Math.cos(rad),0,
+								 0,0,0,1);
+		return matrixR;
+	}
+	
+	/**
+	* @param {Number} rad
+	* @return {Matrix4}
+	*/
+	static rotateY(rad){
+		let matrixR= new Matrix4(Math.cos(rad),0, Math.sin(rad),0,
+								0,1,0,0,
+								 - Math.sin(rad),0,Math.cos(rad),0,
+								 0,0,0,1);
+		return matrixR;
+	}
+	
+	
+	/**
+	* @param {Number} rad
+	* @return {Matrix4}
+	*/
+	static rotateZ(rad){
+		let matrixR= new Matrix4(Math.cos(rad), Math.sin(rad),0,0,
+								 - Math.sin(rad),Math.cos(rad),0,0,
+								 0,0,1,0,
+								 0,0,0,1);
+		return matrixR;
+	}
+	
+	
+	/**
+	* @param {Vector3} v
+	* @return {Matrix4}
+	*/
+	static scale(s){
+		let matrixS= new Matrix4(sx,0,0,0,
+								 0,sy,0,0,
+								 0,0,sz,0,
+								 0,0,0,1);
+		return matrixS;
+	}
+	
+	
+	/**
+	* @param {Vector3} v
+	* @return {Matrix4}
+	*/
+	static translate(v){
+		let matrixT= new Matrix4(1,0,0,0,
+								 0,1,0,0,
+								 0,0,1,0,
+								 tx,ty,tz,1);
+		return matrixT;
+		
+	}
+	
 }
 
 

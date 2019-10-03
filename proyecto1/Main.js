@@ -46,7 +46,7 @@
 		
 		    
 		
-		//transformacion 4* queda cool personaje, con 2* suzanne
+
 		transfor = CG.Matrix4.multiply(CG.Matrix4.multiply(transfor,CG.Matrix4.rotateY(8*angle)), CG.Matrix4.rotateX(4*angle));
 		transfor = CG.Matrix4.multiply(transfor, viewProjectionMatri);
 		points.forEach((vertex, index) => {

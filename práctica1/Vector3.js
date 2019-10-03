@@ -158,6 +158,30 @@ var CG = (function(CG) {
 		zero(){
 			this.set(0,0,0);
 		}
+		
+		
+		/**
+	  * Funcion que resta los argumentos de dos vectores entrada a entrada
+	  * @param {Vector3} u
+	  * @param {Vector3} v
+	  * @return {Vector3}
+	  */
+		static resta(u, v) {
+			return new CG.Vector3(u.x - v.x, u.y - v.y, u.z - v.z);
+		}
+
+	/**
+	  * Funcion que saca el producto cruz de dos vectores
+	  * @param {Vector3} u
+	  * @param {Vector3} v
+	  * @return {Vector3}
+	  */
+		static cruz(u, v) {
+			return new CG.Vector3((u.y * v.z)-(u.z*v.y), -((u.x*v.z)-(u.z*v.x)), (u.x*v.y)-(u.y*v.x));
+		}
+
+
+		
 
 	}
 
