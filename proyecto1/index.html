@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>Page Title</title>
+  <link rel="stylesheet" href="style.css" type="text/css">
+
+<!-- Cargar archivo .obj 
+<form name="formulario" method="post" 
+      enctype="multipart/form-data"> 
+  <input type="file" name="adjunto" accept=".obj" multiple>
+</form>-->
+<!-- ....................................................... -->
+  <script type="text/javascript" src="Vector3.js"></script>
+  <script type="text/javascript" src="Vector4.js"></script>
+  <script type="text/javascript" src="Matrix3.js"></script>
+  <script type="text/javascript" src="Matrix4.js"></script>
+  
+  <script type="text/javascript" src="Main.js"></script>
+</head>
+
+<body>
+	<input type="file" id="adjunto"/><p></p>
+	<canvas id="the_canvas" width="800" height="600"></canvas><p></p>
+	<p> Posicion de la cámara </p>
+	<span>X = </span><input type="text" id="valor1" value="0" onchange="change()" />
+  <span>Y = </span><input type="text" id="valor2" value="0" onchange="change()"/>
+  <span>Z = </span><input type="text" id="valor3" value="5" onchange="change()"/>
+</body>
+
+</html>
