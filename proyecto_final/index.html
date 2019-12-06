@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>Page Title</title>
+  <link rel="stylesheet" href="style.css" type="text/css">
+	<script type="text/javascript" src="Materials/Material.js"></script>
+		<script type="text/javascript" src="GenericGeometry.js"></script>
+  <script type="text/javascript" src="sol.js"></script>
+	<script type="text/javascript" src="Materials/FlatMaterial.js"></script>
+	<script type="text/javascript" src="Materials/DiffuseMaterialReflector.js"></script>
+<script type="text/javascript" src="SpaceInvader.js"></script>	
+
+  <script type="text/javascript" src="Vector3.js"></script>
+  <script type="text/javascript" src="Vector4.js"></script>
+  <script type="text/javascript" src="Matrix3.js"></script>
+  <script type="text/javascript" src="Matrix4.js"></script>
+  <script type="text/javascript" src="Plane.js"></script>
+	 <script type="text/javascript" src="Camera.js"></script>
+	<script type="text/javascript" src="Skybox.js"></script>
+	<script type="text/javascript" src="alien.js"></script>
+	<script type="text/javascript" src="planeta.js"></script>
+	<script type="text/javascript" src="planeta2.js"></script>
+	<script type="text/javascript" src="asteroide.js"></script>
+	<script type="text/javascript" src="Sphere.js"></script>
+	<script type="text/javascript" src="nave.js"></script>
+  <script type="text/javascript" src="TrackballCamera.js"></script>
+  <script type="text/javascript" src="ImageLoader.js"></script>
+  <script type="text/javascript" src="Utils.js"></script>
+  <script type="text/javascript" src="Main.js"></script>
+</head>
+
+<body>
+  <canvas id="the_canvas" width="800" height="600"></canvas>
+	
+	
+	  <!-- shaders para el skybox -->
+  <script id="skybox-vertex-shader" type="vertex-shader">
+    attribute vec4 a_position;
+    attribute vec2 a_texcoord;
+    uniform mat4 u_PVM_matrix;
+    varying vec2 v_texcoord;
+    void main() {
+      gl_Position = u_PVM_matrix * a_position;
+      v_texcoord = a_texcoord;
+    }
+  </script>
+   
+  <script id="skybox-fragment-shader" type="fragment-shader">
+    precision mediump float;
+    varying vec2 v_texcoord;
+    uniform sampler2D u_texture;
+    void main() {
+      gl_FragColor = texture2D(u_texture, v_texcoord);
+    }
+  </script>
+	
+
+  <script id="diffuse-vertex-shader" type="vertex-shader">
+    precision mediump float;
+
+    attribute vec4 a_position;
+    attribute vec2 a_texcoord;
+    attribute vec3 a_normal;
+    attribute vec3 a_tangent;
+    attribute vec3 a_bitangent;
+
+    uniform mat4 u_M_matrix;
+    uniform mat4 u_PVM_matrix;
+    uniform vec3 u_light_position;
+
+    varying vec2 v_texcoord;
+    
+    varying vec3 v_tangent_light_pos;
+    varying vec3 v_tangent_position;
+	
+	//color
+	//attribute vec4 a_color;
+	//varying vec4 v_color;
+	
+	//attribute vec4 a_color_light;
+	//varying vec4 color_light;
+
+    void main() {
+      vec3 T = normalize(vec3(u_M_matrix * vec4(a_tangent, 0.0)));
+      vec3 B = normalize(vec3(u_M_matrix * vec4(a_bitangent, 0.0)));
+      vec3 N = normalize(vec3(u_M_matrix * vec4(a_normal, 0.0)));
+      //vec3 B = cross(N, T);
+      mat3 TBN = mat3(
+        T.x, B.x, N.x,
+        T.y, B.y, N.y,
+        T.z, B.z, N.z
+      );
+      v_tangent_light_pos = TBN * (u_light_position - vec3(u_M_matrix * a_position));
+      v_tangent_position = TBN * vec3(u_M_matrix * a_position);
+
+      gl_Position = u_PVM_matrix * a_position;
+      v_texcoord = a_texcoord;
+	  
+	   //color
+	  //v_color = a_color;
+	  //color_light = a_color_light;
+	  
+    }
+  </script>
+   
+  <script id="diffuse-fragment-shader" type="fragment-shader">
+    precision mediump float;
+
+	//color
+	//vec4 v_color=vec4(.7,1,1,1);
+	uniform vec4 v_color;
+	
+    varying vec2 v_texcoord;
+    varying vec3 v_tangent_light_pos;
+    varying vec3 v_tangent_position;
+
+    //vec3 color_light = vec3(.7,1,1);
+    uniform vec3 color_light;
+	
+
+    uniform sampler2D u_texture;
+    uniform sampler2D u_texture_normal;
+
+    void main() {
+      vec3 to_light = normalize( v_tangent_light_pos );
+      vec3 view_d = normalize( -v_tangent_position );
+      vec3 fragment_normal = texture2D(u_texture_normal, v_texcoord).rgb;
+      fragment_normal = normalize(fragment_normal * 2.0 - 1.0);
+      vec3 reflection = normalize(reflect(-to_light, fragment_normal));
+      
+      vec3 specular = color_light * pow(max(dot(reflection, view_d),0.0), 64.0);
+
+      float cos_angle = max(dot(fragment_normal, to_light), 0.0);
+      vec3 color_pared = vec3(texture2D(u_texture, v_texcoord));
+      gl_FragColor = vec4(color_pared * cos_angle + specular + (color_pared * 0.3),  1.0)* v_color;
+      //gl_FragColor = texture2D(u_texture, v_texcoord);
+      //gl_FragColor = vec4(vec3(1, 0, 0) * cos_angle, 1.0);
+    }
+  </script>
+
+</body>
+
+</html>
