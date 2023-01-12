@@ -5,4 +5,4 @@ Ramírez García Diana Isabel
 # E-mail #
 dianis@ciencias.unam.mx
 ## Descripción ##
-Repositorio de la clase de Garficación por computadora 2020-1
+Repositorio de la clase de Graficación por computadora 2020-1
